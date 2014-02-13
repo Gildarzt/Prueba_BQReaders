@@ -3,9 +3,10 @@
 
     <string name="app_name">Test</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="tvEmail">Correo electrónico</string>
-    <string name="tvPassword">Contraseña</string>
-    <string name="loginButton">Acceder</string>
+   <string name="loginButton">Acceder</string>
+    <string name="change_account">Cambiar cuenta</string>
+    <string name="dbButton">Enlazar con dropbox</string>
+    <string name="title_button">Ordenar por título</string>
+    <string name="date_button">Ordenar por fecha</string>
 
 </resources>

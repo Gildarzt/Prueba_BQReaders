@@ -36,6 +36,8 @@
 		    	<category android:name="android.intent.category.DEFAULT" />
 		  	</intent-filter>
 		</activity>
+		<activity 
+		    android:name="com.example.test.Library"></activity>
 		<service
 		  	android:name="com.dropbox.sync.android.DbxSyncService"
 		  	android:enabled="true"
