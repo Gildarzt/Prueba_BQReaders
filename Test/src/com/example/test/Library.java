@@ -3,6 +3,9 @@ package com.example.test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import com.dropbox.sync.android.DbxFileInfo;
+import com.dropbox.sync.android.DbxFileSystem;
+import com.dropbox.sync.android.DbxPath;
 import nl.siegmann.epublib.domain.Book;
 import android.app.Activity;
 import android.os.Bundle;
@@ -42,7 +45,11 @@ public class Library extends Activity{
 			}
 		});
 		 expListView = (ExpandableListView) findViewById(R.id.expandableListView1);
-		listBook=getListBook();
+		try{
+			listBook=getListBook(this,DbxPath.ROOT);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		prepareListData(listBook);
         
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
@@ -63,8 +70,29 @@ public class Library extends Activity{
  
         listDataChild.put(listDataHeader.get(0), listBook);
     }
-	private List<Book> getListBook(){
-		List<Book> aux=new ArrayList<Book>();
-		return aux;
+	private List<Book> getListBook(Activity activity,DbxPath path){
+		List<Book> auxList=new ArrayList<Book>();
+		try{
+			DbxFileSystem dbxFs = DbxFileSystem.forAccount(TestAppConfig.getAccountManager(activity).getLinkedAccount());
+			List<DbxFileInfo> infos = dbxFs.listFolder(path);
+			for(int i=0;i<infos.size();i++){
+				if(dbxFs.isFolder(infos.get(i).path)){
+					getListBook(activity,infos.get(i).path);
+				}
+				else{
+					if(dbxFs.isFile(infos.get(i).path)){
+						DbxFileInfo info =dbxFs.getFileInfo(infos.get(i).path);
+						if(info.path.toString().contains(".epub")){
+							Book book = new Book();
+							auxList.add(book);
+						}
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return auxList;
 	}
 }

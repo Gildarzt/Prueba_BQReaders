@@ -1,20 +1,17 @@
 package com.example.test;
 
-
-
 import com.dropbox.sync.android.DbxAccountManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
 import android.view.View.OnClickListener;
 
 public class MainActivity extends Activity {
 	private DbxAccountManager dbAcc;
-	private String appKey = "4rsxxjd1d0sczfu";
-	private String appSecret = "hmmwmf5uzeduy37";
+	
 	private int REQUEST_LINK_TO_DBX = 0;
 	private Button changeAcc;
 	private Button dbButton;
@@ -47,7 +44,7 @@ public class MainActivity extends Activity {
 				startActivityForResult(intent,1);
 			}
 		});
-		dbAcc = DbxAccountManager.getInstance(getApplicationContext(), appKey, appSecret);
+		dbAcc = TestAppConfig.getAccountManager(this);
 	}
 	@Override
 	protected void onResume() {
