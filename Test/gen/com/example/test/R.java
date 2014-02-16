@@ -24,16 +24,17 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080009;
+        public static final int accName=0x7f080003;
+        public static final int action_settings=0x7f08000a;
         public static final int changeAcc=0x7f080001;
-        public static final int dateButton=0x7f080004;
+        public static final int dateButton=0x7f080005;
         public static final int dbButton=0x7f080000;
-        public static final int expandableListView1=0x7f080005;
-        public static final int lblListHeader=0x7f080006;
-        public static final int lblListItem=0x7f080007;
-        public static final int lblListItemDescp=0x7f080008;
+        public static final int expandableListView1=0x7f080006;
+        public static final int lblListHeader=0x7f080007;
+        public static final int lblListItem=0x7f080008;
+        public static final int lblListItemDescp=0x7f080009;
         public static final int loginButton=0x7f080002;
-        public static final int titleButton=0x7f080003;
+        public static final int titleButton=0x7f080004;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -50,8 +51,14 @@ public final class R {
         public static final int change_account=0x7f050003;
         public static final int date_button=0x7f050006;
         public static final int dbButton=0x7f050004;
+        public static final int dropbox_app_key=0x7f050009;
+        public static final int dropbox_authactivity_app_key=0x7f05000a;
+        public static final int dropbox_secret_key=0x7f05000b;
+        public static final int extension=0x7f05000c;
+        public static final int folder_button=0x7f050008;
         public static final int loginButton=0x7f050002;
         public static final int title_button=0x7f050005;
+        public static final int tvFolder=0x7f050007;
     }
     public static final class style {
         /** 

@@ -1,26 +1,30 @@
 package com.example.test;
 
-import com.dropbox.sync.android.DbxAccountManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-
+import android.widget.TextView;
 import android.view.View.OnClickListener;
 
 public class MainActivity extends Activity {
-	private DbxAccountManager dbAcc;
 	
 	private int REQUEST_LINK_TO_DBX = 0;
 	private Button changeAcc;
 	private Button dbButton;
 	private Button loginButton;
+	private TextView accName;
+	private TestManager manager;
+	private static Context context;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		context=getApplicationContext();
 		setContentView(R.layout.activity_main);
+		manager=TestManager.getSession();
 		dbButton=(Button)findViewById(R.id.dbButton);
 		dbButton.setOnClickListener(new OnClickListener(){
 			 @Override
@@ -32,7 +36,7 @@ public class MainActivity extends Activity {
 		changeAcc.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				dbAcc.unlink();
+				manager.Logout();
 				showUnlinkedView();
 			}
 		});
@@ -44,12 +48,13 @@ public class MainActivity extends Activity {
 				startActivityForResult(intent,1);
 			}
 		});
-		dbAcc = TestAppConfig.getAccountManager(this);
+		accName=(TextView)findViewById(R.id.accName);
 	}
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (dbAcc.hasLinkedAccount()) {
+		if (manager.getManager().hasLinkedAccount()) {
+			accName.setText(manager.getManager().getLinkedAccount().getAccountInfo().displayName);
 		    showLinkedView();
 		} else {
 			showUnlinkedView();
@@ -60,16 +65,18 @@ public class MainActivity extends Activity {
         dbButton.setVisibility(View.GONE);
         changeAcc.setVisibility(View.VISIBLE);
         loginButton.setVisibility(View.VISIBLE);
+        accName.setVisibility(View.VISIBLE);
     }
 
     private void showUnlinkedView() {
         dbButton.setVisibility(View.VISIBLE);
         changeAcc.setVisibility(View.GONE);
         loginButton.setVisibility(View.GONE);
+        accName.setVisibility(View.GONE);
     }
 
 	private void onClickDropbox(){
-		dbAcc.startLink((Activity)this, REQUEST_LINK_TO_DBX);
+		manager.Login((Activity)this, REQUEST_LINK_TO_DBX);
 	}
 	
 	@Override
@@ -82,4 +89,7 @@ public class MainActivity extends Activity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+	public static Context getAppContext() {
+		return MainActivity.context;
+	}
 }

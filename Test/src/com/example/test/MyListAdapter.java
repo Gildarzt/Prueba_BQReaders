@@ -2,7 +2,7 @@ package com.example.test;
 
 import java.util.HashMap;
 import java.util.List;
-
+import com.example.test.domain.DbBook;
 import nl.siegmann.epublib.domain.Book;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -12,15 +12,15 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
  
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class MyListAdapter extends BaseExpandableListAdapter {
  
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<Book>> _listDataChild;
+    private HashMap<String, List<DbBook>> _listDataChild;
  
-    public ExpandableListAdapter(Context context, List<String> listDataHeader,
-            HashMap<String, List<Book>> listChildData) {
+    public MyListAdapter(Context context, List<String> listDataHeader,
+            HashMap<String, List<DbBook>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -55,12 +55,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 				.findViewById(R.id.lblListItem);
     
 		txtListChildDescp=(TextView) convertView.findViewById(R.id.lblListItemDescp);
-    	
-		
-        
-    	
     	txtListChild.setText(child.getTitle());
-    	
     	txtListChildDescp.setText(child.toString());
     	
         return convertView;
