@@ -16,8 +16,9 @@ public class MainActivity extends Activity {
 	private Button dbButton;
 	private Button loginButton;
 	private TextView accName;
-	private TestManager manager;
+	private static TestManager manager;
 	private static Context context;
+	private static TextView accSync;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,23 +50,31 @@ public class MainActivity extends Activity {
 			}
 		});
 		accName=(TextView)findViewById(R.id.accName);
+		accSync=(TextView)findViewById(R.id.tvSync);
 	}
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (manager.getManager().hasLinkedAccount()) {
-			accName.setText(manager.getManager().getLinkedAccount().getAccountInfo().displayName);
-		    showLinkedView();
-		} else {
-			showUnlinkedView();
+		if(manager!=null){
+			if (manager.getManager().hasLinkedAccount()) {
+				if(manager.getFileSystem())
+					accName.setText(manager.getManager().getLinkedAccount().getAccountInfo().displayName);
+				else
+					accSync.setVisibility(View.VISIBLE);
+				showLinkedView();
+			} else {
+				showUnlinkedView();
+			}
 		}
+		else
+			showUnlinkedView();
 	}
-
     private void showLinkedView() {
         dbButton.setVisibility(View.GONE);
         changeAcc.setVisibility(View.VISIBLE);
         loginButton.setVisibility(View.VISIBLE);
         accName.setVisibility(View.VISIBLE);
+        accSync.setVisibility(View.GONE);
     }
 
     private void showUnlinkedView() {
@@ -73,6 +82,7 @@ public class MainActivity extends Activity {
         changeAcc.setVisibility(View.GONE);
         loginButton.setVisibility(View.GONE);
         accName.setVisibility(View.GONE);
+        accSync.setVisibility(View.GONE);
     }
 
 	private void onClickDropbox(){
@@ -91,5 +101,8 @@ public class MainActivity extends Activity {
     }
 	public static Context getAppContext() {
 		return MainActivity.context;
+	}
+	public static void accSyncGone(){
+		accSync.setVisibility(View.GONE);
 	}
 }

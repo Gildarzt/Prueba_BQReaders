@@ -3,7 +3,6 @@ package com.example.test;
 import java.util.HashMap;
 import java.util.List;
 import com.example.test.domain.DbBook;
-import nl.siegmann.epublib.domain.Book;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -41,7 +40,7 @@ public class MyListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
             boolean isLastChild, View convertView, ViewGroup parent) {
     	
-    	Book child=(Book)getChild(groupPosition, childPosition);
+    	DbBook child=(DbBook)getChild(groupPosition, childPosition);
     	TextView txtListChild;
     	TextView txtListChildDescp;
     	
@@ -51,12 +50,10 @@ public class MyListAdapter extends BaseExpandableListAdapter {
 			convertView = infalInflater.inflate(R.layout.list_item, null);
 		}
 
-		txtListChild = (TextView) convertView
-				.findViewById(R.id.lblListItem);
-    
+		txtListChild = (TextView) convertView.findViewById(R.id.lblListItem);
 		txtListChildDescp=(TextView) convertView.findViewById(R.id.lblListItemDescp);
-    	txtListChild.setText(child.getTitle());
-    	txtListChildDescp.setText(child.toString());
+    	txtListChild.setText(child.getEPubBookTitle());
+    	txtListChildDescp.setText(child.getInfo().path.getName());
     	
         return convertView;
     }
