@@ -1,4 +1,8 @@
-package com.example.test;
+package com.example.test.presentation;
+
+import com.example.test.R;
+import com.example.test.domain.TestManager;
+import com.example.test.domain.TestManager.actualiceStatus;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -8,17 +12,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
-
-public class MainActivity extends Activity {
+/**Main Activity
+ * 
+ * @author Antonio
+ *
+ */
+public class MainActivity extends Activity implements actualiceStatus{
 	
 	private int REQUEST_LINK_TO_DBX = 0;
 	private Button changeAcc;
 	private Button dbButton;
 	private Button loginButton;
 	private TextView accName;
-	private static TestManager manager;
+	private TestManager manager;
 	private static Context context;
-	private static TextView accSync;
+	private TextView accSync;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +59,49 @@ public class MainActivity extends Activity {
 		});
 		accName=(TextView)findViewById(R.id.accName);
 		accSync=(TextView)findViewById(R.id.tvSync);
-	}
-	@Override
-	protected void onResume() {
-		super.onResume();
+		/**This part of the code was first in onResume method, but i only want that it executes once, so i put here
+		 * 
+		 */
 		if(manager!=null){
 			if (manager.getManager().hasLinkedAccount()) {
-				if(manager.getFileSystem())
-					accName.setText(manager.getManager().getLinkedAccount().getAccountInfo().displayName);
-				else
-					accSync.setVisibility(View.VISIBLE);
-				showLinkedView();
+				manager.getFileSystem(this);
+				showActView();
 			} else {
 				showUnlinkedView();
 			}
 		}
 		else
 			showUnlinkedView();
+	}
+	@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_LINK_TO_DBX) {
+            if (resultCode == Activity.RESULT_OK) {
+            	manager.getFileSystem(this);
+            	showActView();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+	private void onClickDropbox(){
+		manager.Login((Activity)this, REQUEST_LINK_TO_DBX);
+	}
+	/**This method is used in the TestManager class to get the context of the application
+	 * 
+	 * @return
+	 */
+	public static Context getAppContext() {
+		return MainActivity.context;
+	}
+	/**<------------------------------------METHODS TO SHOW THE DIFERENT STATE---------------------------->*/
+	private void showActView(){
+		accSync.setVisibility(View.VISIBLE);
+		dbButton.setVisibility(View.GONE);
+        changeAcc.setVisibility(View.GONE);
+        loginButton.setVisibility(View.GONE);
+        accName.setVisibility(View.GONE);
+		
 	}
     private void showLinkedView() {
         dbButton.setVisibility(View.GONE);
@@ -84,25 +118,12 @@ public class MainActivity extends Activity {
         accName.setVisibility(View.GONE);
         accSync.setVisibility(View.GONE);
     }
-
-	private void onClickDropbox(){
-		manager.Login((Activity)this, REQUEST_LINK_TO_DBX);
-	}
-	
+	/**<-------------------------------------------INTERFACE------------------------------------------------->*/
 	@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_LINK_TO_DBX) {
-            if (resultCode == Activity.RESULT_OK) {
-            	showLinkedView();
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-	public static Context getAppContext() {
-		return MainActivity.context;
-	}
-	public static void accSyncGone(){
-		accSync.setVisibility(View.GONE);
+	public void accSyncGone(){
+		if(manager.getManager().getLinkedAccount().getAccountInfo()!=null){	
+			accName.setText(manager.getManager().getLinkedAccount().getAccountInfo().displayName);
+			showLinkedView();
+		}
 	}
 }

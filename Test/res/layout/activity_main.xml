@@ -44,7 +44,7 @@
         android:layout_below="@+id/dbButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text="Se esta sincronizando la cuenta"
+        android:text="@string/sync_acc"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
